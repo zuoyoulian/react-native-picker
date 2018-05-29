@@ -11,8 +11,26 @@
 
 @implementation BzwPicker
 
--(instancetype)initWithFrame:(CGRect)frame dic:(NSDictionary *)dic leftStr:(NSString *)leftStr centerStr:(NSString *)centerStr rightStr:(NSString *)rightStr topbgColor:(NSArray *)topbgColor bottombgColor:(NSArray *)bottombgColor leftbtnbgColor:(NSArray *)leftbtnbgColor rightbtnbgColor:(NSArray *)rightbtnbgColor centerbtnColor:(NSArray *)centerbtnColor selectValueArry:(NSArray *)selectValueArry  weightArry:(NSArray *)weightArry
-       pickerToolBarFontSize:(NSString *)pickerToolBarFontSize  pickerFontSize:(NSString *)pickerFontSize  pickerFontColor:(NSArray *)pickerFontColor pickerRowHeight:(NSString *)pickerRowHeight pickerFontFamily:(NSString *)pickerFontFamily
+-(instancetype)initWithFrame:(CGRect)frame
+                         dic:(NSDictionary *)dic
+                     leftStr:(NSString *)leftStr
+                   centerStr:(NSString *)centerStr
+                    rightStr:(NSString *)rightStr
+                  topbgColor:(NSArray *)topbgColor
+               bottombgColor:(NSArray *)bottombgColor
+              leftbtnbgColor:(NSArray *)leftbtnbgColor
+             rightbtnbgColor:(NSArray *)rightbtnbgColor
+              centerbtnColor:(NSArray *)centerbtnColor
+             selectValueArry:(NSArray *)selectValueArry
+                  weightArry:(NSArray *)weightArry
+       pickerToolBarFontSize:(NSString *)pickerToolBarFontSize
+              pickerFontSize:(NSString *)pickerFontSize
+             pickerFontColor:(NSArray *)pickerFontColor
+             pickerRowHeight:(NSString *)pickerRowHeight
+            pickerFontFamily:(NSString *)pickerFontFamily
+                centerSubStr:(NSString *)centerSubStr
+              centerSubColor:(NSArray *)centerSubColor
+           centerSubFontSize:(NSString *)centerSubFontSize
 
 {
     self = [super initWithFrame:frame];
@@ -32,6 +50,9 @@
         self.pickerFontFamily=pickerFontFamily;
         self.pickerFontColor=pickerFontColor;
         self.pickerRowHeight=pickerRowHeight;
+        self.centerSubStr = centerSubStr;
+        self.centerSubColor = centerSubColor;
+        self.centerSubFontSize = centerSubFontSize;
         [self getStyle];
         [self getnumStyle];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -43,7 +64,7 @@
 }
 -(void)makeuiWith:(NSArray *)topbgColor With:(NSArray *)bottombgColor With:(NSArray *)leftbtnbgColor With:(NSArray *)rightbtnbgColor With:(NSArray *)centerbtnColor
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0, self.frame.size.width, 40)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0, self.frame.size.width, 70)];
     view.backgroundColor = [self colorWith:topbgColor];
     [self addSubview:view];
     
@@ -73,8 +94,15 @@
     cenLabel.font = [UIFont fontWithName:_pickerFontFamily size:[_pickerToolBarFontSize integerValue]];
     [cenLabel setTextColor:[self colorWith:centerbtnColor]];
     [view addSubview:cenLabel];
+    
+    UILabel *cenSubLabel=[[UILabel alloc]initWithFrame:CGRectMake(90, 40, SCREEN_WIDTH-180, 30)];
+    cenSubLabel.text=self.centerSubStr;
+    cenSubLabel.textAlignment=NSTextAlignmentCenter;
+    cenSubLabel.font = [UIFont fontWithName:_pickerFontFamily size:[_centerSubFontSize integerValue]];
+    [cenSubLabel setTextColor:[self colorWith:_centerSubColor]];
+    [view addSubview:cenSubLabel];
 
-    self.pick = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40, self.frame.size.width, self.frame.size.height - 40)];
+    self.pick = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 70, self.frame.size.width, self.frame.size.height - 70)];
     self.pick.delegate = self;
     self.pick.dataSource = self;
     self.pick.showsSelectionIndicator=YES;

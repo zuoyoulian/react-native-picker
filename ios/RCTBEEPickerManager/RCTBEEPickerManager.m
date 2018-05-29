@@ -45,15 +45,18 @@ RCT_EXPORT_METHOD(_init:(NSDictionary *)indic){
     NSString *pickerConfirmBtnText=indic[@"pickerConfirmBtnText"];
     NSString *pickerCancelBtnText=indic[@"pickerCancelBtnText"];
     NSString *pickerTitleText=indic[@"pickerTitleText"];
+    NSString *pickerSubTitleText=indic[@"pickerSubTitleText"];
     NSArray *pickerConfirmBtnColor=indic[@"pickerConfirmBtnColor"];
     NSArray *pickerCancelBtnColor=indic[@"pickerCancelBtnColor"];
     NSArray *pickerTitleColor=indic[@"pickerTitleColor"];
+    NSArray *pickerSubTitleColor=indic[@"pickerSubTitleColor"];
     NSArray *pickerToolBarBg=indic[@"pickerToolBarBg"];
     NSArray *pickerBg=indic[@"pickerBg"];
     NSArray *selectArry=indic[@"selectedValue"];
     NSArray *weightArry=indic[@"wheelFlex"];
     NSString *pickerToolBarFontSize=[NSString stringWithFormat:@"%@",indic[@"pickerToolBarFontSize"]];
     NSString *pickerFontSize=[NSString stringWithFormat:@"%@",indic[@"pickerFontSize"]];
+    NSString *pickerSubTitleFontSize=[NSString stringWithFormat:@"%@",indic[@"pickerSubTitleFontSize"]];
     NSString *pickerFontFamily=[NSString stringWithFormat:@"%@",indic[@"pickerFontFamily"]];
     NSArray *pickerFontColor=indic[@"pickerFontColor"];
     NSString *pickerRowHeight=indic[@"pickerRowHeight"];
@@ -75,12 +78,12 @@ RCT_EXPORT_METHOD(_init:(NSDictionary *)indic){
     }];
 
     if ([[UIDevice currentDevice].systemVersion doubleValue] >= 9.0 ) {
-        self.height=250;
+        self.height=280;
     }else{
-        self.height=220;
+        self.height=250;
     }
     
-    self.pick=[[BzwPicker alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, self.height) dic:dataDic leftStr:pickerCancelBtnText centerStr:pickerTitleText rightStr:pickerConfirmBtnText topbgColor:pickerToolBarBg bottombgColor:pickerBg leftbtnbgColor:pickerCancelBtnColor rightbtnbgColor:pickerConfirmBtnColor centerbtnColor:pickerTitleColor selectValueArry:selectArry weightArry:weightArry pickerToolBarFontSize:pickerToolBarFontSize pickerFontSize:pickerFontSize pickerFontColor:pickerFontColor  pickerRowHeight: pickerRowHeight pickerFontFamily:pickerFontFamily];
+    self.pick=[[BzwPicker alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, self.height) dic:dataDic leftStr:pickerCancelBtnText centerStr:pickerTitleText rightStr:pickerConfirmBtnText topbgColor:pickerToolBarBg bottombgColor:pickerBg leftbtnbgColor:pickerCancelBtnColor rightbtnbgColor:pickerConfirmBtnColor centerbtnColor:pickerTitleColor selectValueArry:selectArry weightArry:weightArry pickerToolBarFontSize:pickerToolBarFontSize pickerFontSize:pickerFontSize pickerFontColor:pickerFontColor  pickerRowHeight: pickerRowHeight pickerFontFamily:pickerFontFamily centerSubStr:pickerSubTitleText centerSubColor:pickerSubTitleColor centerSubFontSize:pickerSubTitleFontSize];
     
     _pick.bolock=^(NSDictionary *backinfoArry){
 
