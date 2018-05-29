@@ -12,9 +12,11 @@ const options = {
     pickerConfirmBtnText: 'confirm',
     pickerCancelBtnText: 'cancel',
     pickerTitleText: 'pls select',
+    pickerSubTitleText: 'pls select',
     pickerConfirmBtnColor: [1, 186, 245, 1],
     pickerCancelBtnColor: [1, 186, 245, 1],
     pickerTitleColor: [20, 20, 20, 1],
+    pickerSubTitleColor: [20, 20, 20, 1],
     pickerToolBarBg: [232, 232, 232, 1],
     pickerTextEllipsisLen: 6,
     pickerBg: [196, 199, 206, 1],
@@ -27,6 +29,7 @@ const options = {
     onPickerSelect(){},
     pickerToolBarFontSize: 16,
     pickerFontSize: 16,
+    pickerSubTitleFontSize: 14,
     pickerFontColor: [31, 31 ,31, 1]
 };
 

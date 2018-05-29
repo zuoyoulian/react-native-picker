@@ -43,6 +43,16 @@ interface PickerOptions {
     pickerTitleText?: string
 
     /**
+     * Subtitle text shown at the top of the picker
+     *
+     * Default value is 'pls select'
+     *
+     * @type {string}
+     * @memberof PickerOptions
+     */
+    pickerSubTitleText?: string
+
+    /**
      * Text for the confirm button
      *
      * Default value is 'confirm'
@@ -102,6 +112,19 @@ interface PickerOptions {
     pickerTitleColor?: number[]
 
     /**
+     * The color of the Subtitle text
+     *
+     * Accepts rgba values as an array
+     * [R, G, B, A]
+     *
+     * Default is [20, 20, 20, 1]
+     *
+     * @type {number[]}
+     * @memberof PickerOptions
+     */
+    pickerSubTitleColor?: number[]
+
+    /**
      * The background color of the toobar
      *
      * Accepts rgba values as an array
@@ -147,6 +170,16 @@ interface PickerOptions {
      * @memberof PickerOptions
      */
     pickerFontSize?: number
+
+    /**
+     * Font size of the Subtitle in the picker
+     *
+     * Default is 14
+     *
+     * @type {number}
+     * @memberof PickerOptions
+     */
+    pickerSubTitleFontSize?: number
 
     /**
      * Row height of the items in the picker
