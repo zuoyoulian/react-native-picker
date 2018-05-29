@@ -12,7 +12,7 @@
 #define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
 
 
-typedef void(^backBolock)(NSDictionary * );
+typedef void(^backBolock)(NSDictionary *, BOOL);
 
 @interface BzwPicker : UIView<UIPickerViewDataSource,UIPickerViewDelegate>
 
@@ -100,7 +100,8 @@ typedef void(^backBolock)(NSDictionary * );
             pickerFontFamily:(NSString *)pickerFontFamily
                 centerSubStr:(NSString *)centerSubStr
               centerSubColor:(NSArray *)centerSubColor
-              centerSubFontSize:(NSString *)centerSubFontSize;
+           centerSubFontSize:(NSString *)centerSubFontSize;
 
 -(void)selectRow;
 @end
+

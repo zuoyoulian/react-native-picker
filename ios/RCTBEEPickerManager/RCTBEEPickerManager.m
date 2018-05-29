@@ -13,6 +13,7 @@
 @interface RCTBEEPickerManager()
 
 @property(nonatomic,strong)BzwPicker *pick;
+@property(nonatomic,strong)UIButton *bgButton;
 @property(nonatomic,assign)float height;
 @property(nonatomic,weak)UIWindow * window;
 
@@ -35,13 +36,13 @@
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(_init:(NSDictionary *)indic){
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
         [[UIApplication sharedApplication].keyWindow endEditing:YES];
     });
-
+    
     self.window = [UIApplication sharedApplication].keyWindow;
-
+    
     NSString *pickerConfirmBtnText=indic[@"pickerConfirmBtnText"];
     NSString *pickerCancelBtnText=indic[@"pickerCancelBtnText"];
     NSString *pickerTitleText=indic[@"pickerTitleText"];
@@ -61,75 +62,90 @@ RCT_EXPORT_METHOD(_init:(NSDictionary *)indic){
     NSArray *pickerFontColor=indic[@"pickerFontColor"];
     NSString *pickerRowHeight=indic[@"pickerRowHeight"];
     id pickerData=indic[@"pickerData"];
-
+    
     NSMutableDictionary *dataDic=[[NSMutableDictionary alloc]init];
-
+    
     dataDic[@"pickerData"]=pickerData;
-
+    
     [self.window.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-
+        
         if ([obj isKindOfClass:[BzwPicker class]]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-
+                
                 [obj removeFromSuperview];
             });
         }
-
+        
     }];
-
+    
     if ([[UIDevice currentDevice].systemVersion doubleValue] >= 9.0 ) {
         self.height=280;
     }else{
         self.height=250;
     }
     
+    // 先移除子视图
+    if (_bgButton) {
+        [_bgButton removeFromSuperview];
+    }
+    if (_pick) {
+        [_pick removeFromSuperview];
+    }
+    NSLog(@"pickerToolBarFontSize = %@", pickerToolBarFontSize);
     self.pick=[[BzwPicker alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, self.height) dic:dataDic leftStr:pickerCancelBtnText centerStr:pickerTitleText rightStr:pickerConfirmBtnText topbgColor:pickerToolBarBg bottombgColor:pickerBg leftbtnbgColor:pickerCancelBtnColor rightbtnbgColor:pickerConfirmBtnColor centerbtnColor:pickerTitleColor selectValueArry:selectArry weightArry:weightArry pickerToolBarFontSize:pickerToolBarFontSize pickerFontSize:pickerFontSize pickerFontColor:pickerFontColor  pickerRowHeight: pickerRowHeight pickerFontFamily:pickerFontFamily centerSubStr:pickerSubTitleText centerSubColor:pickerSubTitleColor centerSubFontSize:pickerSubTitleFontSize];
     
-    _pick.bolock=^(NSDictionary *backinfoArry){
-
+    self.bgButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.bgButton.frame = self.window.bounds;
+    [self.bgButton setBackgroundColor:[UIColor blackColor]];
+    self.bgButton.alpha = 0.5;
+    [self.bgButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
+    
+    __weak __typeof(&*self)weakSelf = self;
+    _pick.bolock=^(NSDictionary *backinfoArry,  BOOL hiddePick){
         dispatch_async(dispatch_get_main_queue(), ^{
-
-            [self.bridge.eventDispatcher sendAppEventWithName:@"pickerEvent" body:backinfoArry];
+            if (hiddePick) {
+                [weakSelf hide];
+            }
+            [weakSelf.bridge.eventDispatcher sendAppEventWithName:@"pickerEvent" body:backinfoArry];
         });
     };
-
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-
-        [self.window addSubview:_pick];
+        [weakSelf.window addSubview:_bgButton];
+        [weakSelf.window addSubview:_pick];
     });
-
+    
 }
 
 RCT_EXPORT_METHOD(show){
     if (self.pick) {
-
+        __weak __typeof(&*self)weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
             [UIView animateWithDuration:.3 animations:^{
-
-                [_pick setFrame:CGRectMake(0, SCREEN_HEIGHT-self.height, SCREEN_WIDTH, self.height)];
-
-            }];
-        });
-    }return;
-}
-
-RCT_EXPORT_METHOD(hide){
-
-    if (self.pick) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:.3 animations:^{
-                [_pick setFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, self.height)];
+                weakSelf.bgButton.alpha = 0.5;
+                [_pick setFrame:CGRectMake(0, SCREEN_HEIGHT-weakSelf.height, SCREEN_WIDTH, weakSelf.height)];
             }];
         });
     }
+    return;
+}
 
+RCT_EXPORT_METHOD(hide){
+    if (self.pick) {
+        __weak __typeof(&*self)weakSelf = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:.3 animations:^{
+                weakSelf.bgButton.alpha = 0;
+                [_pick setFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, weakSelf.height)];
+            }];
+        });
+    }
+    
     self.pick.hidden=YES;
-
     return;
 }
 
 RCT_EXPORT_METHOD(select: (NSArray*)data){
-
     if (self.pick) {
         dispatch_async(dispatch_get_main_queue(), ^{
             _pick.selectValueArry = data;
@@ -139,13 +155,12 @@ RCT_EXPORT_METHOD(select: (NSArray*)data){
 }
 
 RCT_EXPORT_METHOD(isPickerShow:(RCTResponseSenderBlock)getBack){
-
+    
     if (self.pick) {
-
         CGFloat pickY=_pick.frame.origin.y;
-
+        
         if (pickY==SCREEN_HEIGHT) {
-
+            
             getBack(@[@YES]);
         }else
         {
@@ -157,3 +172,4 @@ RCT_EXPORT_METHOD(isPickerShow:(RCTResponseSenderBlock)getBack){
 }
 
 @end
+

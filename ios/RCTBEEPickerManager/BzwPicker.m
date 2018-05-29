@@ -34,6 +34,7 @@
 
 {
     self = [super initWithFrame:frame];
+    self.backgroundColor = [UIColor whiteColor];
     if (self)
     {
         self.backArry=[[NSMutableArray alloc]init];
@@ -70,7 +71,7 @@
     
     self.leftBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.leftBtn.frame = CGRectMake(0, 0, 90, 40);
-    self.leftBtn.font = [UIFont fontWithName:_pickerFontFamily size:[_pickerToolBarFontSize integerValue]];
+    self.leftBtn.titleLabel.font = [UIFont fontWithName:_pickerFontFamily size:[_pickerToolBarFontSize integerValue]];
     self.leftBtn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [self.leftBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 10.0, 0, 0)];
     [self.leftBtn setTitle:self.leftStr forState:UIControlStateNormal];
@@ -80,12 +81,12 @@
     
     self.rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     self.rightBtn.frame = CGRectMake(view.frame.size.width-90,0, 90, 40);
-    self.rightBtn.font = [UIFont fontWithName:_pickerFontFamily size:[_pickerToolBarFontSize integerValue]];
+    self.rightBtn.titleLabel.font = [UIFont fontWithName:_pickerFontFamily size:[_pickerToolBarFontSize integerValue]];
     self.rightBtn.contentHorizontalAlignment=UIControlContentHorizontalAlignmentRight;
     [self.rightBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10.0)];
     [self.rightBtn setTitle:self.rightStr forState:UIControlStateNormal];
     [self.rightBtn setTitleColor:[self colorWith:rightbtnbgColor] forState:UIControlStateNormal];
-    [self.rightBtn addTarget:self action:@selector(cfirmAction) forControlEvents:UIControlEventTouchUpInside];  
+    [self.rightBtn addTarget:self action:@selector(cfirmAction) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:self.rightBtn];
     
     UILabel *cenLabel=[[UILabel alloc]initWithFrame:CGRectMake(90, 5, SCREEN_WIDTH-180, 30)];
@@ -101,7 +102,7 @@
     cenSubLabel.font = [UIFont fontWithName:_pickerFontFamily size:[_centerSubFontSize integerValue]];
     [cenSubLabel setTextColor:[self colorWith:_centerSubColor]];
     [view addSubview:cenSubLabel];
-
+    
     self.pick = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 70, self.frame.size.width, self.frame.size.height - 70)];
     self.pick.delegate = self;
     self.pick.dataSource = self;
@@ -486,7 +487,7 @@
     }
     
     if (self.backArry.count>0) {
-        self.bolock(dic);
+        self.bolock(dic, NO);
     }
 }
 
@@ -617,26 +618,15 @@
         
         [dic setValue:[self getselectIndexArry] forKey:@"selectedIndex"];
         
-        self.bolock(dic);
+        self.bolock(dic, YES);
     }else{
         [self getNOselectinfo];
         
         [dic setValue:self.backArry forKey:@"selectedValue"];
         [dic setValue:@"cancel" forKey:@"type"];
         [dic setValue:[self getselectIndexArry] forKey:@"selectedIndex"];
-        self.bolock(dic);
+        self.bolock(dic, YES);
     }
-    
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:.2f animations:^{
-            
-            [self setFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 250)];
-            
-        }];
-    });
-
-    self.pick.hidden=YES;
 }
 //按了确定按钮
 -(void)cfirmAction
@@ -654,9 +644,9 @@
         [dic setValue:@"confirm" forKey:@"type"];
         NSMutableArray *arry=[[NSMutableArray alloc]init];
         [dic setValue:[self getselectIndexArry] forKey:@"selectedIndex"];
-//        [dic setValue:arry forKey:@"selectedIndex"];
+        //        [dic setValue:arry forKey:@"selectedIndex"];
         
-        self.bolock(dic);
+        self.bolock(dic, YES);
         
     }else{
         [self getNOselectinfo];
@@ -665,15 +655,8 @@
         
         [dic setValue:[self getselectIndexArry] forKey:@"selectedIndex"];
         
-        self.bolock(dic);
+        self.bolock(dic, YES);
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:.2f animations:^{
-            
-            [self setFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 250)];
-        }];
-    });
 }
 -(void)selectRow
 {
@@ -996,3 +979,4 @@
     return NO;
 }
 @end
+
