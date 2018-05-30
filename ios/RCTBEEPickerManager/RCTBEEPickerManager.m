@@ -97,7 +97,7 @@ RCT_EXPORT_METHOD(_init:(NSDictionary *)indic){
     self.bgButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.bgButton.frame = self.window.bounds;
     [self.bgButton setBackgroundColor:[UIColor blackColor]];
-    self.bgButton.alpha = 0.5;
+    self.bgButton.alpha = 0;
     [self.bgButton addTarget:self action:@selector(hide) forControlEvents:UIControlEventTouchUpInside];
     
     __weak __typeof(&*self)weakSelf = self;
@@ -141,7 +141,7 @@ RCT_EXPORT_METHOD(hide){
         });
     }
     
-    self.pick.hidden=YES;
+    //    self.pick.hidden=YES;
     return;
 }
 
