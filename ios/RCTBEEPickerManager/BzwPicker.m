@@ -65,7 +65,11 @@
 }
 -(void)makeuiWith:(NSArray *)topbgColor With:(NSArray *)bottombgColor With:(NSArray *)leftbtnbgColor With:(NSArray *)rightbtnbgColor With:(NSArray *)centerbtnColor
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0, self.frame.size.width, 70)];
+    CGFloat cenSubHeight = 0;
+    if ([self.centerSubStr isKindOfClass:[NSString class]] && self.centerSubStr.length > 0) {
+        cenSubHeight = 30;
+    }
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0, self.frame.size.width, 40 + cenSubHeight)];
     view.backgroundColor = [self colorWith:topbgColor];
     [self addSubview:view];
     
@@ -96,14 +100,20 @@
     [cenLabel setTextColor:[self colorWith:centerbtnColor]];
     [view addSubview:cenLabel];
     
-    UILabel *cenSubLabel=[[UILabel alloc]initWithFrame:CGRectMake(90, 40, SCREEN_WIDTH-180, 30)];
-    cenSubLabel.text=self.centerSubStr;
-    cenSubLabel.textAlignment=NSTextAlignmentCenter;
-    cenSubLabel.font = [UIFont fontWithName:_pickerFontFamily size:[_centerSubFontSize integerValue]];
-    [cenSubLabel setTextColor:[self colorWith:_centerSubColor]];
-    [view addSubview:cenSubLabel];
+    if ([self.centerSubStr isKindOfClass:[NSString class]] && self.centerSubStr.length > 0) {
+        UILabel *cenSubLabel=[[UILabel alloc]initWithFrame:CGRectMake(90, 40, SCREEN_WIDTH-180, cenSubHeight)];
+        cenSubLabel.text=self.centerSubStr;
+        cenSubLabel.textAlignment=NSTextAlignmentCenter;
+        cenSubLabel.font = [UIFont fontWithName:_pickerFontFamily size:[_centerSubFontSize integerValue]];
+        [cenSubLabel setTextColor:[self colorWith:_centerSubColor]];
+        [view addSubview:cenSubLabel];
+    }
     
-    self.pick = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 70, self.frame.size.width, self.frame.size.height - 70)];
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 40 + cenSubHeight, self.frame.size.width, 0.5)];
+    lineView.backgroundColor = [UIColor lightGrayColor];
+    [self addSubview:lineView];
+    
+    self.pick = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 40.5 + cenSubHeight, self.frame.size.width, self.frame.size.height - 40.5 - cenSubHeight)];
     self.pick.delegate = self;
     self.pick.dataSource = self;
     self.pick.showsSelectionIndicator=YES;
