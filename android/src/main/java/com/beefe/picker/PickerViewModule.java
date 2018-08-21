@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.beefe.picker.util.MIUIUtils;
@@ -426,6 +427,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
       if (dialog == null) {
         dialog = new Dialog(activity, R.style.Dialog_Full_Screen);
         dialog.setContentView(view);
+        dialog.setCanceledOnTouchOutside(true);
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         Window window = dialog.getWindow();
         if (window != null) {
@@ -438,7 +440,7 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
               //layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
             }
           }
-          layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+          layoutParams.flags = LayoutParams.FLAG_FULLSCREEN;
           layoutParams.format = PixelFormat.TRANSPARENT;
           layoutParams.windowAnimations = R.style.PickerAnim;
           layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
