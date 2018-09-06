@@ -428,32 +428,35 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
       int height = btlViewHeight + pickerViewHeight;
       if (dialog == null) {
         dialog = new Dialog(activity, R.style.Dialog_Full_Screen);
-        dialog.setContentView(view);
-        dialog.setCanceledOnTouchOutside(true);
-        Window window = dialog.getWindow();
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
-        if (window != null) {
-          if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-          } else {
-            if (MIUIUtils.isMIUI()) {
-              layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION;
-            } else {
-              //layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
-            }
-          }
-          ViewGroup.LayoutParams layoutParams1 = view.getLayoutParams();
-          layoutParams1.height = height;
-          view.setLayoutParams(layoutParams1);
-          layoutParams.windowAnimations = R.style.PickerAnim;
-          layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-          layoutParams.gravity = Gravity.BOTTOM;
-          window.setAttributes(layoutParams);
-        }
       } else {
         dialog.dismiss();
-        dialog.setContentView(view);
       }
+      initDialog(view, height);
+    }
+  }
+
+  private void initDialog(View view, int height) {
+    dialog.setContentView(view);
+    dialog.setCanceledOnTouchOutside(true);
+    Window window = dialog.getWindow();
+    WindowManager.LayoutParams layoutParams = window.getAttributes();
+    if (window != null) {
+      if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+      } else {
+        if (MIUIUtils.isMIUI()) {
+          layoutParams.type = WindowManager.LayoutParams.TYPE_APPLICATION;
+        } else {
+          //layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
+        }
+      }
+      ViewGroup.LayoutParams layoutParams1 = view.getLayoutParams();
+      layoutParams1.height = height;
+      view.setLayoutParams(layoutParams1);
+      layoutParams.windowAnimations = R.style.PickerAnim;
+      layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+      layoutParams.gravity = Gravity.BOTTOM;
+      window.setAttributes(layoutParams);
     }
   }
 
