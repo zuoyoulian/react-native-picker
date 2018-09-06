@@ -3,6 +3,7 @@ package com.beefe.picker;
 import static android.graphics.Color.argb;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.res.AssetManager;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
@@ -428,8 +430,8 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
         dialog = new Dialog(activity, R.style.Dialog_Full_Screen);
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(true);
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         Window window = dialog.getWindow();
+        WindowManager.LayoutParams layoutParams = window.getAttributes();
         if (window != null) {
           if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
@@ -440,11 +442,11 @@ public class PickerViewModule extends ReactContextBaseJavaModule implements Life
               //layoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
             }
           }
-          layoutParams.flags = LayoutParams.FLAG_FULLSCREEN;
-          layoutParams.format = PixelFormat.TRANSPARENT;
+          ViewGroup.LayoutParams layoutParams1 = view.getLayoutParams();
+          layoutParams1.height = height;
+          view.setLayoutParams(layoutParams1);
           layoutParams.windowAnimations = R.style.PickerAnim;
           layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-          layoutParams.height = height;
           layoutParams.gravity = Gravity.BOTTOM;
           window.setAttributes(layoutParams);
         }
